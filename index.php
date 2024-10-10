@@ -36,13 +36,13 @@
     }
 
     function performWithdrawal(&$bankAccount, $amount) { //tiene en cuenta el overdraft
+        echo "Doing transaction withdrawal (-" . $amount . ") with current balance " . $bankAccount["balance"] . "<br>";
         if(($bankAccount["balance"] - $amount < 0) && !$bankAccount["overdraft"]) {
             echo "Error transaction: Insufficient balance to complete the withdrawal.<br>";
         } else {
             if($bankAccount["overdraft"] && (($bankAccount["balance"] - $amount) < (0 - $bankAccount["limit"]))) {
                 echo "Error transaction: Withdrawal exceeds overdraft limit.<br>";
             } else { //en todos los otros casos funciona withdrawal
-                echo "Doing transaction withdrawal (-" . $amount . ") with current balance " . $bankAccount["balance"] . "<br>";
                 $bankAccount["balance"] -= $amount;
             }
         }
@@ -67,6 +67,9 @@
     performWithdrawal($bankAccount1, 25);
     showUpdatedBalance($bankAccount1, "withdrawal", 25);
 
+    //Intento de hacer withdrawal de 600, que dará error
+    performWithdrawal($bankAccount1, 600);
+
     outputBalance($bankAccount1);
     closeOrOpenAccount($bankAccount1);
 
@@ -83,8 +86,10 @@
     performWithdrawal($bankAccount2,300);
     showUpdatedBalance($bankAccount2,"withdrawal", 300);
 
+    performWithdrawal($bankAccount2, 50);
+    showUpdatedBalance($bankAccount2, "withdrawal", 50);
 
-
+    performWithdrawal($bankAccount2, 120);
 
     ?>
 </body>
