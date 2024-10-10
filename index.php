@@ -20,14 +20,23 @@
         echo "My balance: " . $bankAccount["balance"] . "<br>";
     }
 
-    function closeOrOpenAccount(&$bankAccount) {
+    function closeAccount(&$bankAccount) {
         if(!$bankAccount["closed"]) {
             $bankAccount["closed"] = true;
             echo "My account is now closed.<br>";
         } else {
-            $bankAccount["closed"] = false;
-            echo "My account is now opened.<br>";
+            echo "Error: Account is already closed.<br>";
         }
+    }
+
+    function openAccount(&$bankAccount) {
+        if($bankAccount["closed"]) {
+            $bankAccount["closed"] = false;
+            echo "My account is now reopened.<br>";
+        } else {
+            echo "Error: Account is already open.<br>";
+        }
+
     }
 
     function performDeposit(&$bankAccount, $amount) {
@@ -58,8 +67,8 @@
     setBankAccount($bankAccount1, 400, false); //no hace falta pasar argumento limit
     outputBalance($bankAccount1);
 
-    closeOrOpenAccount($bankAccount1);
-    closeOrOpenAccount($bankAccount1);
+    closeAccount($bankAccount1);
+    openAccount($bankAccount1);
 
     performDeposit($bankAccount1, 150);
     showUpdatedBalance($bankAccount1, "deposit", 150);
@@ -71,7 +80,7 @@
     performWithdrawal($bankAccount1, 600);
 
     outputBalance($bankAccount1);
-    closeOrOpenAccount($bankAccount1);
+    closeAccount($bankAccount1);
 
 
 //CUENTA BANCARIA 2 -----------------------------------------------------------------------------------------------
@@ -90,7 +99,13 @@
     showUpdatedBalance($bankAccount2, "withdrawal", 50);
 
     performWithdrawal($bankAccount2, 120);
+    outputBalance($bankAccount2);
 
+    performWithdrawal($bankAccount2, 20);
+    showUpdatedBalance($bankAccount2,"withdrawal", 20);
+
+    closeAccount($bankAccount2);
+    closeAccount($bankAccount2); //imprimirá error al intentar volver a cerrarla
     ?>
 </body>
 </html>
